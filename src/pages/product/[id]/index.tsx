@@ -3,6 +3,7 @@ import styles from '@/styles/ProductPage.module.scss'
 import { createPortal } from 'react-dom'
 import Toast from '@/components/Toast'
 import { useState } from 'react'
+import GooglePay from '@/components/GooglePay'
 interface IProductPageProps {
 	product: Product
 }
@@ -70,7 +71,12 @@ export default function ProductPage({ product }: IProductPageProps) {
 					<p className={styles['product-price']}>${product.price}</p>
 					<p className={styles['product-category']}>{product.category}</p>
 					<p className={styles['product-stock']}>{product.stock} in stock</p>
-					<button onClick={handleAddToCart} className={styles['add-to-cart']}>Add to Cart</button>
+					<div className={styles['payment-methods']}>
+						<button onClick={handleAddToCart} className={styles['add-to-cart']}>
+							Add to Cart
+						</button>
+						<GooglePay price={product.price} />
+					</div>
 				</div>
 			</div>
 		</>
