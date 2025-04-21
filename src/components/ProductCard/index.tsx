@@ -2,8 +2,8 @@ import Image from 'next/image'
 import styles from './ProductCard.module.scss'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { create } from 'domain'
 import Toast from '../Toast'
+import { useRouter } from 'next/router'
 
 interface IProductCardProps {
 	product: Product
@@ -11,10 +11,19 @@ interface IProductCardProps {
 
 export default function ProductCard({ product }: IProductCardProps) {
 	const [displayToast, setDisplayToast] = useState(false)
+	const router = useRouter()
 
-	const handleAddToCart = () => {
+	const handleAddToCart = (event: React.MouseEvent) => {
+		event.stopPropagation()
+		event.preventDefault()
 		setDisplayToast(true)
 	}
+
+	const handleClickProductLink = (event: React.MouseEvent) => {
+		event.preventDefault()
+		router.push(`/product/${product.id}`)
+	}
+
 
 	return (
 		<>
@@ -28,13 +37,16 @@ export default function ProductCard({ product }: IProductCardProps) {
 					/>,
 					document.body
 				)}
-			<div className={styles['product-card']}>
+			<a className={styles['product-card']} onClick={handleClickProductLink} href={`/product/${product.id}`}>
 				<Image
 					className={styles['product-image']}
 					alt={product.title}
 					src={product.thumbnail}
 					width={200}
 					height={200}
+					placeholder='blur'
+					blurDataURL={product.thumbnail}
+					fill={false}
 				></Image>
 				<h2 className={styles['product-title']}>{product.title}</h2>
 				{product.tags && (
@@ -50,7 +62,7 @@ export default function ProductCard({ product }: IProductCardProps) {
 				<button onClick={handleAddToCart} className={styles['add-to-cart-button']}>
 					Add to Cart
 				</button>
-			</div>
+			</a>
 		</>
 	)
 }
