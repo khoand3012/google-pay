@@ -37,6 +37,8 @@ export default function GooglePay(props: IGooglePayProps) {
 	}
 
 	const handleReadyToPayChange = (result: ReadyToPayChangeResponse) => {
+		if (!(process.env.NEXT_PUBLIC_DEBUG_MODE === 'true')) return
+
 		console.log('Ready to Pay Change', result)
 		if (!result.paymentMethodPresent) {
 			console.error('There is no payment method present')
@@ -53,10 +55,11 @@ export default function GooglePay(props: IGooglePayProps) {
 	}
 
 	const handleError = (error: Error | google.payments.api.PaymentsError) => {
-		console.error('Error', error)
-		setErrors(prev => [...prev, 'Error', JSON.stringify(error)])
+		if (process.env.NEXT_PUBLIC_DEBUG_MODE === 'true') {
+			console.error('Error', error)
+			setErrors(prev => [...prev, 'Error', JSON.stringify(error)])
+		}
 	}
-
 
 	const paymentRequest = {
 		apiVersion: 2,
@@ -112,7 +115,7 @@ export default function GooglePay(props: IGooglePayProps) {
 				onReadyToPayChange={handleReadyToPayChange}
 				onError={handleError}
 			/>
-			{errors.length > 0 && (
+			{errors.length > 0 && process.env.NEXT_PUBLIC_DEBUG_MODE === 'true' && (
 				<div className={styles['error-container']}>
 					{errors.map((error, index) => (
 						<p key={index} className={styles['error-message']}>
