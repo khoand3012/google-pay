@@ -4,6 +4,8 @@
 	justify-content: center;
 	max-width: 1200px;
 	margin: 0 auto;
+	flex-direction: var(--set-product-page-direction, column);
+	padding: 80px 0;
 }
 .product-image-container {
 	flex: 1;
@@ -58,4 +60,10 @@
 
 .add-to-cart:hover {
 	background-color: #0056b3;
+}
+
+@media (min-width: 768px) {
+	.product-page {
+		--set-product-page-direction: row;
+	}
 }
