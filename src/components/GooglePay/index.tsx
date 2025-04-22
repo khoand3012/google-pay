@@ -1,5 +1,7 @@
 import GooglePayButton, { ReadyToPayChangeResponse } from '@google-pay/button-react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import styles from './GooglePay.module.scss'
 
 interface IGooglePayProps {
 	price: number
@@ -8,6 +10,7 @@ interface IGooglePayProps {
 export default function GooglePay(props: IGooglePayProps) {
 	const { price } = props
 	const router = useRouter()
+	const [errors, setErrors] = useState<string[]>([])
 
 	const handleLoadPaymentData = (paymentData: google.payments.api.PaymentData) => {
 		console.log('Load payment data', paymentData)
@@ -37,14 +40,21 @@ export default function GooglePay(props: IGooglePayProps) {
 		console.log('Ready to Pay Change', result)
 		if (!result.paymentMethodPresent) {
 			console.error('There is no payment method present')
+			setErrors(prev => [...prev, 'There is no payment method present', JSON.stringify(result)])
 		} else if (!result.isButtonVisible) {
 			console.log('Button is not visible')
-		} else if (result.isReadyToPay) {
+			setErrors(prev => [...prev, 'Button is not visible', JSON.stringify(result)])
+		} else if (!result.isReadyToPay) {
+			console.log('Not Ready to Pay')
+			setErrors(prev => [...prev, 'Not Ready to Pay', JSON.stringify(result)])
+		} else {
 			console.log('Ready to Pay')
 		}
-		else {
-			console.log('Not Ready to Pay')
-		}
+	}
+
+	const handleError = (error: Error | google.payments.api.PaymentsError) => {
+		console.error('Error', error)
+		setErrors(prev => [...prev, 'Error', JSON.stringify(error)])
 	}
 
 
@@ -89,16 +99,28 @@ export default function GooglePay(props: IGooglePayProps) {
 	} satisfies google.payments.api.PaymentDataRequest
 
 	return (
-		<GooglePayButton
-			buttonType="checkout"
-			buttonSizeMode="fill"
-			environment="TEST"
-			paymentRequest={paymentRequest}
-			onLoadPaymentData={handleLoadPaymentData}
-			existingPaymentMethodRequired={false}
-			onPaymentAuthorized={handlePaymentAuthorized}
-			onPaymentDataChanged={handlePaymentDataChanged}
-			onReadyToPayChange={handleReadyToPayChange}
-		/>
+		<>
+			<GooglePayButton
+				buttonType="checkout"
+				buttonSizeMode="fill"
+				environment="TEST"
+				paymentRequest={paymentRequest}
+				onLoadPaymentData={handleLoadPaymentData}
+				existingPaymentMethodRequired={false}
+				onPaymentAuthorized={handlePaymentAuthorized}
+				onPaymentDataChanged={handlePaymentDataChanged}
+				onReadyToPayChange={handleReadyToPayChange}
+				onError={handleError}
+			/>
+			{errors.length > 0 && (
+				<div className={styles['error-container']}>
+					{errors.map((error, index) => (
+						<p key={index} className={styles['error-message']}>
+							{error}
+						</p>
+					))}
+				</div>
+			)}
+		</>
 	)
 }

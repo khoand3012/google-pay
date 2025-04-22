@@ -1,0 +1,15 @@
+.error-container {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    width: 100%;
+    border: 1px solid #eaeaea;
+    border-radius: 4px;
+    gap: 4px;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+}
