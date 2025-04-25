@@ -1,3 +1,7 @@
+declare var amazon
+
+declare module '@amazonpay/amazon-pay-api-sdk-nodejs'
+
 type Product = {
 	id: number
 	title: string
@@ -170,6 +174,13 @@ type RecurringMetaData = {
 	amount?: Price
 }
 
+type MerchantMetaData = {
+	merchantReferenceId?: string
+	merchantStoreName?: string
+	noteToBuyer?: string
+	customInformation?: string
+}
+
 /** Payload for the Create Amazon Checkout Session request. */
 type CheckoutSessionPayload = {
 	/** URLs associated to the Checkout Session used to complete checkout. The URLs must use HTTPS protocol. */
@@ -191,4 +202,72 @@ type CheckoutSessionPayload = {
 	 * Note that it is still your responsibility to call {@link https://developer.amazon.com/docs/amazon-pay-api-v2/charge.html#create-charge|Create Charge} to charge the buyer for each billing cycle. */
 	recurringMetadata?: RecurringMetaData
 	merchantMetadata?: MerchantMetaData
+}
+
+type Buyer = {
+	buyerId: string
+	name: string
+	email: string
+	phoneNumber: string
+	primeMembershipTypes?: string[]
+}
+
+type Address = {
+	name: string
+	addressLine1: string
+	addressLine2?: string
+	addressLine3?: string
+	city: string
+	county: string
+	district?: string
+	stateOrRegion: string
+	postalCode: string
+	countryCode: string
+	phoneNumber: string
+}
+
+type StatusDetails = {
+	state: string
+	reasonCode: string
+	reasonDescription: string
+	lastUpdatedTimestamp: string
+}
+
+type PaymentPreference = {
+	paymentDescriptor: string
+}
+
+type Constraint = {
+	constraintId:
+		| 'CheckoutResultReturnUrlNotSet'
+		| 'ChargeAmountNotSet'
+		| 'PaymentIntentNotSet'
+		| 'BuyerNotAssociated'
+		| 'RecurringFrequencyNotSet'
+	description: string
+}
+
+type CheckoutSession = {
+	checkoutSessionId: string
+	chargePermissionType: 'OneTime' | 'Recurring'
+	recurringMetadata?: RecurringMetaData
+	webCheckoutDetails: WebCheckoutDetails
+	paymentDetails: PaymentDetails
+	merchantMetadata: MerchantMetaData
+	platformId: string
+	providerMetadata: string
+	buyer: Buyer
+	shippingAddress: Address
+	billingAddress: Address
+	paymentPreferences: PaymentPreference[]
+	statusDetails: StatusDetails
+	constraints: Constraint[]
+	creationTimestamp: Date
+	chargePermissionId: string
+	chargeId: string
+	storeId: string
+	deliverySpecifications: DeliverySpecifications
+	releaseEnvironment: string
+	supplementaryData: string
+	checkoutButtonText
 }

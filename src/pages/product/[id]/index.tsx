@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import Toast from '@/components/Toast'
 import { useState } from 'react'
 import GooglePay from '@/components/GooglePay'
+import AmazonPayButton from '@/components/AmazonPay'
 interface IProductPageProps {
 	product: Product
 }
@@ -76,6 +77,7 @@ export default function ProductPage({ product }: IProductPageProps) {
 							Add to Cart
 						</button>
 						<GooglePay price={product.price} />
+						<AmazonPayButton productId={product.id.toString()} />
 					</div>
 				</div>
 			</div>

@@ -1,0 +1,74 @@
+.checkout-review-page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	max-width: 1000px;
+	margin: auto;
+	gap: 48px;
+}
+
+.checkout-addresses {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.shipping-address,
+.billing-address {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.change {
+	cursor: pointer;
+  background-color: transparent;
+  padding: 8px 0;
+  border: none;
+  width: fit-content;
+  font-size: 16px;
+	&:hover {
+		text-decoration: underline;
+	}
+}
+.separator {
+	height: 1px;
+	width: 100%;
+	background-color: #ccc;
+	margin: 10px 0;
+}
+
+.payment-method {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+}
+
+.order-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-self: flex-start;
+  background-color: #ccc;
+  color: #000;
+  padding: 16px;
+  min-width: 400px;
+  max-width: 100%;
+}
+
+.submit-order {
+  background-color: #007bff;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  min-width: 400px;
+  max-width: 100%;
+}
