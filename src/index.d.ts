@@ -115,6 +115,8 @@ type WebCheckoutDetails = {
 	 * * `ProcessOrder` - Buyer will complete checkout on the Amazon Pay hosted page immediately after clicking on the Amazon Pay button. paymentDetails is required when using `ProcessOrder`. addressDetails is also required if you use `ProcessOrder` with productType set to `PayAndShip`.
 	 */
 	checkoutMode?: string
+	/** URL provided by Amazon Pay. Merchant will redirect to this page after setting transaction details to complete checkout. */
+	amazonPayRedirectUrl?: string
 }
 
 type AddressRestrictions = {

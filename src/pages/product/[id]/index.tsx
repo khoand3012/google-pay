@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 	}))
 	return {
 		paths,
-		fallback: true // false or "blocking"
+		fallback: 'blocking' // false or "blocking"
 	}
 }
 
@@ -77,7 +77,7 @@ export default function ProductPage({ product }: IProductPageProps) {
 							Add to Cart
 						</button>
 						<GooglePay price={product.price} />
-						<AmazonPayButton productId={product.id.toString()} />
+						<AmazonPayButton product={product} />
 					</div>
 				</div>
 			</div>

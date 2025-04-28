@@ -8,7 +8,7 @@ const amazonIsSandbox = process.env.NEXT_PUBLIC_AMZ_SANDBOX === 'true'
 const amazonMerchantId = process.env.NEXT_PUBLIC_AMZ_MERCHANT_ID || ''
 
 type AmazonPayButtonProps = {
-	productId: string
+	product: Product
 }
 
 export default function AmazonPayButton(props: AmazonPayButtonProps) {
@@ -34,8 +34,9 @@ export default function AmazonPayButton(props: AmazonPayButtonProps) {
 			amazonPayButton.onClick(async function () {
 				const { payloadJSON, signature, price } = await getAmazonButtonData(
 					window.location.origin,
-					props.productId
+					props.product
 				)
+				//Create cart
 				amazonPayButton.initCheckout({
 					estimatedOrderAmount: { amount: price, currencyCode: 'USD' },
 					createCheckoutSessionConfig: {
