@@ -273,3 +273,68 @@ type CheckoutSession = {
 	supplementaryData: string
 	checkoutButtonText
 }
+
+type ShippingMethod = {
+	shippingMethodName: string
+	shippingMethodCode: string
+}
+
+type EstimationDetails = {
+	/** The time unit of the estimation */
+	timeUnit: 'MINUTE' | 'HOUR'
+	/** Value for this time unit */
+	value: string
+}
+
+type DateTimeWindowDetails = {
+	type: 'DATE' | 'TIME'
+	/** Value of available date or time */
+	value: string[]
+	/** Value of default available date or time */
+	defaultValue: string
+}
+
+type DeliveryOption = {
+	id: string
+	price: Price
+	shippingMethod: ShippingMethod
+	/** Specifies if this delivery option is the default. Exactly one delivery option must be set as `isDefault=true` and rest should be set to false. */
+	isDefault: boolean
+	/** Estimates for shipping (list of size 2, minimum and maximum time needed) */
+	shippingEstimate?: EstimationDetails[]
+	discountedPrice?: Price
+	dateTimeWindow?: DateTimeWindowDetails
+}
+
+type LineItem = {
+	id: string
+	title: string
+	quantity: string
+	/** Individual original price for this line item */
+	listPrice: Price
+	/** Total original price for this line item (listPrice = listPrice * quantity) */
+	totalListPrice: Price
+	/** Title of the item variant. E.g. 'Cushion/Green/M' */
+	variantTitle?: string
+	/** Total price for this line item after discounts */
+	discountedPrice?: Price
+}
+
+type CartDetails = {
+	/** The delivery options available for the provided address. *only required for `PayAndShip` in the onInitCheckout event handler. */
+	deliveryOptions: DeliveryOption[]
+	/** The total shipping costs. */
+	totalShippingAmount: Price
+	/** The total amount for items in the cart. */
+	totalBaseAmount: Price
+	/** The total tax amount for the order. */
+	totalTaxAmount: Price
+	/** The total amount for this transaction. */
+	totalChargeAmount: Price
+	/** The total discount amount for the order. */
+	totalDiscountAmount?: Price
+	/** Total order amount for the transaction. Set this field when you plan to perform multiple authorization. */
+	totalOrderAmount?: Price
+	/** Details of each item in cart. */
+	lineItems?: LineItem[]
+}

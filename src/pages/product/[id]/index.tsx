@@ -5,6 +5,7 @@ import Toast from '@/components/Toast'
 import { useState } from 'react'
 import GooglePay from '@/components/GooglePay'
 import AmazonPayButton from '@/components/AmazonPay'
+import Head from 'next/head'
 interface IProductPageProps {
 	product: Product
 }
@@ -45,6 +46,9 @@ export default function ProductPage({ product }: IProductPageProps) {
 	if (!product) return <div>Loading...</div>
 	return (
 		<>
+			<Head>
+				<title>{product.title}</title>
+			</Head>
 			{displayToast &&
 				createPortal(
 					<Toast
