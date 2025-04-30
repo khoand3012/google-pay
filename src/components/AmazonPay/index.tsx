@@ -6,10 +6,11 @@ import { useRouter } from 'next/router'
 
 type AmazonPayButtonProps = {
 	product: Product
+	onCheckoutComplete: () => void
 }
 
 export default function AmazonPayButton(props: AmazonPayButtonProps) {
-	const { product } = props
+	const { product, onCheckoutComplete } = props
 	const isScriptLoaded = useAmazonPayScript()
 	const router = useRouter()
 
@@ -125,7 +126,7 @@ export default function AmazonPayButton(props: AmazonPayButtonProps) {
 							billingAddress: event.billingAddress,
 							paymentDescriptor: event.paymentDescriptor
 						})
-						router.push('/thankyou')
+						onCheckoutComplete && onCheckoutComplete()
 					} catch (err) {
 						console.log('🚀 ~ useEffect ~ err:', err)
 						return {

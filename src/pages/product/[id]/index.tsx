@@ -6,16 +6,14 @@ import { useState } from 'react'
 import GooglePay from '@/components/GooglePay'
 import AmazonPayButton from '@/components/AmazonPay'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 interface IProductPageProps {
 	product: Product
 }
 
 export async function getStaticPaths() {
-	const products = await fetch('https://dummyjson.com/products?limit=6')
-		.then(res => res.json())
-		.then(data => data.products)
-	const paths = products.map((product: Product) => ({
-		params: { id: product.id.toString() }
+	const paths = [1, 2, 3, 4, 5, 6].map((value: number) => ({
+		params: { id: value.toString() }
 	}))
 	return {
 		paths,
@@ -38,6 +36,7 @@ export async function getStaticProps(context: any) {
 
 export default function ProductPage({ product }: IProductPageProps) {
 	const [displayToast, setDisplayToast] = useState(false)
+	const router = useRouter()
 	const handleAddToCart = (event: React.MouseEvent) => {
 		event.stopPropagation()
 		event.preventDefault()
@@ -81,7 +80,7 @@ export default function ProductPage({ product }: IProductPageProps) {
 							Add to Cart
 						</button>
 						<GooglePay price={product.price} />
-						<AmazonPayButton product={product} />
+						<AmazonPayButton onCheckoutComplete={() => router.push('/thankyou')} product={product} />
 					</div>
 				</div>
 			</div>
